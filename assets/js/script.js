@@ -8,6 +8,19 @@ const products = [
   { id: 4, name: "Tai nghe Bluetooth", price: 1290000, image: "https://source.unsplash.com/random/300x300/?headphones" },
   { id: 5, name: "Giày thể thao nam", price: 899000, image: "https://source.unsplash.com/random/300x300/?shoes" },
   { id: 6, name: "Laptop Gaming RTX", price: 34990000, image: "https://source.unsplash.com/random/300x300/?laptop" },
+  { id: 7, name: "iPhone 17 Pro 256GB | Chính hãng", price: 34390000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-17-pro-256-gb.png" },
+  { id: 8, name: "Samsung Galaxy Z Fold7 12GB 256GB", price: 40590000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-z-fold-7-xanh.jpg" },
+  { id: 9, name: "Laptop Dell Inspiron 14 5440 D0F3W - Chính hãng", price: 15990000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/l/a/laptop_dell_inspiron_14_5440_d0f3w_-_2.png" },
+  { id: 10, name: "Đồng hồ thông minh Coros Pace 4", price: 6960000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ssss_1_28.png" },
+  { id: 11, name: "Đồng hồ thông minh Huawei Watch Fit 3", price: 1990000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/o/dong-ho-thong-minh-huawei-watch-fit-3_2.jpg" },
+  { id: 12, name: "Xiaomi Max 2025 85 N36V", price: 30490000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/o/google-tivi-xiaomi-max-100-inch-n36z-2025_1.png" },
+  { id: 13, name: "Tivi Xiaomi A Pro 4K 55 inch QLED 2026", price: 10290000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/i/tivi-xiaomi-qled-4k-a-pro-55-inch-2026.png" },
+  { id: 14, name: "Tai nghe Bluetooth Apple AirPods 4 | Chính hãng Apple Việt Nam", price: 3050000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/i/airpods-4-2.png" },
+  { id: 15, name: "Ốp lưng linh hoạt Samsung Galaxy Z Fold5 chính hãng", price: 749000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/h/thumb-op-lung_4__1.png" },
+  { id: 16, name: "Bàn phím + Bao da AI Samsung Galaxy Tab S10 FE Plus chính hãng touch pad", price: 4312000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/e/text_ng_n_-_2025-05-13t161740.683.png" },
+  { id: 17, name: "Ốp lưng iPhone 15 Likgus PC", price: 135000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/op-lung-iphone-15-likgus-pc_1_.png" },
+  { id: 18, name: "Màn hình Gaming ASUS TUF VG27AQ5A 27 inch", price: 4990000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/e/text_ng_n_2__9_234.png" },
+  { id: 19, name: "Camera DJI Osmo Pocket 3 Creator Combo", price: 12800000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/may-quay-chong-rung-dji-osmo-pocket-3-advanced-4k_1_.png" }
 ];
 
 // Biến toàn cục

@@ -48,7 +48,7 @@ async function getCart() {
   }
 
   try {
-    const res = await fetch(`${API_URL}/cart`, {
+    const res = await fetch(`${https://minishop-backend.onrender.com}/cart`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json'

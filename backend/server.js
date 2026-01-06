@@ -10,22 +10,21 @@ require('dotenv').config();
 
 const app = express();
 
-// Middleware cơ bản
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// ==================== TẤT CẢ ROUTE API PHẢI ĐẶT TRƯỚC STATIC ====================
-
-// Middleware xác thực
+// Middleware xác thực JWT
 const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'No token provided' });
   }
+
   const token = authHeader.split(' ')[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.id;
+    req.userId = decoded.id;  // Sửa: decoded.id thay vì [decoded.id]
     next();
   } catch (err) {
     return res.status(401).json({ error: 'Invalid or expired token' });
@@ -38,11 +37,13 @@ app.post('/register', async (req, res) => {
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Vui lòng điền đầy đủ thông tin!' });
   }
+
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'Email đã được sử dụng!' });
     }
+
     const user = new User({ name, email, password });
     await user.save();
     res.json({ message: 'Đăng ký thành công! Vui lòng đăng nhập.' });
@@ -60,9 +61,11 @@ app.post('/login', async (req, res) => {
     if (!user || !(await user.comparePassword(password))) {
       return res.status(400).json({ error: 'Email hoặc mật khẩu sai!' });
     }
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
     res.json({ token, user: { name: user.name, id: user._id } });
   } catch (err) {
+    console.error('Lỗi đăng nhập:', err);
     res.status(500).json({ error: 'Lỗi server' });
   }
 });
@@ -78,7 +81,7 @@ app.get('/cart', authMiddleware, async (req, res) => {
   }
 });
 
-// API: Thêm/sửa/xóa sản phẩm trong giỏ
+// API: Thêm / cập nhật / xóa item trong giỏ (quantity âm = xóa)
 app.post('/cart/add', authMiddleware, async (req, res) => {
   try {
     const { productId, quantity = 1 } = req.body;
@@ -90,13 +93,13 @@ app.post('/cart/add', authMiddleware, async (req, res) => {
     const itemIndex = user.cart.findIndex(item => item.productId === productId);
 
     if (itemIndex > -1) {
-      // Đã có sản phẩm → cập nhật số lượng
+      // Đã tồn tại → cập nhật số lượng
       user.cart[itemIndex].quantity += quantity;
       if (user.cart[itemIndex].quantity <= 0) {
-        user.cart.splice(itemIndex, 1); // Xóa nếu số lượng <= 0
+        user.cart.splice(itemIndex, 1); // Xóa nếu <= 0
       }
     } else if (quantity > 0) {
-      // Chưa có → thêm mới
+      // Thêm mới
       user.cart.push({ productId, quantity });
     }
 
@@ -108,7 +111,7 @@ app.post('/cart/add', authMiddleware, async (req, res) => {
   }
 });
 
-// API: Xóa sạch giỏ
+// API: Xóa sạch giỏ hàng
 app.post('/cart/clear', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
@@ -116,6 +119,7 @@ app.post('/cart/clear', authMiddleware, async (req, res) => {
     await user.save();
     res.json({ message: 'Giỏ hàng đã xóa sạch' });
   } catch (err) {
+    console.error('Lỗi xóa giỏ:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -129,10 +133,12 @@ app.post('/forgot-password', async (req, res) => {
 
     const token = crypto.randomBytes(20).toString('hex');
     user.resetPasswordToken = token;
-    user.resetPasswordExpires = Date.now() + 3600000;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 giờ
+
     await user.save();
 
-    const resetUrl = `https://minishop-backend.onrender.com/reset-password.html?token=${token}`;
+    // Sửa: dùng backtick cho template string
+    const resetUrl = `https://minishop-frontend.onrender.com/reset-password.html?token=${token}`; // ← thay bằng URL frontend thật của bạn
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -143,15 +149,15 @@ app.post('/forgot-password', async (req, res) => {
     });
 
     await transporter.sendMail({
-      to: user.email,
       from: process.env.EMAIL_USER,
+      to: user.email,
       subject: 'MiniShop - Đặt lại mật khẩu',
       text: `Click link để đặt lại mật khẩu (hiệu lực 1 giờ):\n\n${resetUrl}`
     });
 
     res.json({ message: 'Link reset đã gửi đến email!' });
   } catch (err) {
-    console.error(err);
+    console.error('Lỗi gửi email reset:', err);
     res.status(500).json({ error: 'Lỗi gửi email' });
   }
 });
@@ -174,25 +180,29 @@ app.post('/reset-password', async (req, res) => {
 
     res.json({ message: 'Đặt lại mật khẩu thành công!' });
   } catch (err) {
+    console.error('Lỗi reset password:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// API Admin: Lấy danh sách user
+// API Admin: Lấy danh sách user (nếu cần)
 app.get('/admin/users', authMiddleware, async (req, res) => {
   try {
     const admin = await User.findById(req.userId);
-    if (!admin.isAdmin) return res.status(403).json({ error: 'Không có quyền!' });
+    if (!admin?.isAdmin) return res.status(403).json({ error: 'Không có quyền!' });
+
     const users = await User.find().select('-password');
     res.json(users);
   } catch (err) {
+    console.error('Lỗi admin/users:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// ==================== SAU TẤT CẢ API MỚI ĐẾN STATIC ====================
+// Serve static files (frontend) - ĐẶT SAU TẤT CẢ API
 app.use(express.static(path.join(__dirname, '..')));
 
+// Catch-all route cho SPA (React/Vite)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
@@ -200,8 +210,10 @@ app.get('*', (req, res) => {
 // Kết nối MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB error:', err));
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // Khởi động server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

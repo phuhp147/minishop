@@ -132,7 +132,7 @@ app.post('/forgot-password', async (req, res) => {
     user.resetPasswordExpires = Date.now() + 3600000;
     await user.save();
 
-    const resetUrl = `http://localhost:5000/reset-password.html?token=${token}`;
+    const resetUrl = `https://minishop-backend.onrender.com/reset-password.html?token=${token}`;
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',

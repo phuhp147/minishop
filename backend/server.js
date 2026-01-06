@@ -24,7 +24,7 @@ const authMiddleware = async (req, res, next) => {
   const token = authHeader.split(' ')[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.id; // Sửa: decoded.id thay vì [decoded.id]
+    req.userId = decoded.id;  // Sửa: decoded.id thay vì [decoded.id]
     next();
   } catch (err) {
     return res.status(401).json({ error: 'Invalid or expired token' });
@@ -45,7 +45,7 @@ app.post('/register', async (req, res) => {
     }
 
     const user = new User({ name, email, password });
-    await user.save(); // Sửa: user.save()
+    await user.save();  // Sửa: user.save()
     res.json({ message: 'Đăng ký thành công! Vui lòng đăng nhập.' });
   } catch (err) {
     console.error('Lỗi đăng ký:', err);
@@ -63,7 +63,7 @@ app.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.json({ token, user: { name: user.name, id: user._id } }); // Sửa: user.name
+    res.json({ token, user: { name: user.name, id: user._id } });  // Sửa: user.name
   } catch (err) {
     console.error('Lỗi đăng nhập:', err);
     res.status(500).json({ error: 'Lỗi server' });
@@ -93,17 +93,15 @@ app.post('/cart/add', authMiddleware, async (req, res) => {
     const itemIndex = user.cart.findIndex(item => item.productId === productId);
 
     if (itemIndex > -1) {
-      // Đã tồn tại → cập nhật số lượng
       user.cart[itemIndex].quantity += quantity;
       if (user.cart[itemIndex].quantity <= 0) {
         user.cart.splice(itemIndex, 1); // Xóa nếu <= 0
       }
     } else if (quantity > 0) {
-      // Thêm mới
       user.cart.push({ productId, quantity });
     }
 
-    await user.save(); // Sửa: user.save()
+    await user.save();  // Sửa: user.save()
     res.json(user.cart);
   } catch (err) {
     console.error('Lỗi thêm giỏ hàng:', err);
@@ -116,7 +114,7 @@ app.post('/cart/clear', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
     user.cart = [];
-    await user.save(); // Sửa: user.save()
+    await user.save();  // Sửa: user.save()
     res.json({ message: 'Giỏ hàng đã xóa sạch' });
   } catch (err) {
     console.error('Lỗi xóa giỏ:', err);
@@ -137,8 +135,8 @@ app.post('/forgot-password', async (req, res) => {
 
     await user.save();
 
-    // Sửa: dùng backtick cho URL
-    const resetUrl = `https://mini-shop.netlify.app/reset-password.html?token=${token}`; // Thay bằng URL frontend thật của bạn
+    // Sửa: dùng backtick đúng cách
+    const resetUrl = `https://mini-shop.netlify.app/reset-password.html?token=${token}`; // Thay bằng URL frontend thật nếu khác
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -199,7 +197,7 @@ app.get('/admin/users', authMiddleware, async (req, res) => {
   }
 });
 
-// Serve static files (frontend) - PHẢI ĐẶT SAU TẤT CẢ API
+// Serve static files (frontend) - ĐẶT SAU TẤT CẢ API
 app.use(express.static(path.join(__dirname, '..')));
 
 // Catch-all cho SPA

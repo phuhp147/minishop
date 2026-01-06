@@ -1,4 +1,4 @@
-const API_URL = '${API_URL}minishop-backend.onrender.com'; // Thay bằng URL khi deploy
+const API_URL = 'https://minishop-backend.onrender.com'; // Thay bằng URL khi deploy
 
 // Dữ liệu sản phẩm mẫu
 const products = [
@@ -46,15 +46,13 @@ async function getCart() {
     cart = [];
     return [];
   }
-
   try {
-    const res = await fetch(`${https://minishop-backend.onrender.com}/cart`, {
+    const res = await fetch(`${API_URL}/cart`, {  // ← Dòng 51 đã sửa
       headers: {
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json'
       }
     });
-
     if (!res.ok) {
       const text = await res.text();
       console.error(`Lỗi API /cart: ${res.status}`, text.substring(0, 200));
@@ -65,7 +63,6 @@ async function getCart() {
       cart = [];
       return [];
     }
-
     const contentType = res.headers.get('content-type');
     if (contentType && contentType.includes('application/json')) {
       cart = await res.json();
@@ -77,7 +74,6 @@ async function getCart() {
     console.error('Lỗi kết nối khi lấy giỏ hàng:', err);
     cart = [];
   }
-
   return cart;
 }
 

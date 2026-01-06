@@ -2,12 +2,12 @@ const API_URL = 'https://minishop-backend.onrender.com'; // Thay bằng URL khi 
 
 // Dữ liệu sản phẩm mẫu
 const products = [
-  { id: 1, name: "Áo thun nam cao cấp", price: 299000, image: "https://source.unsplash.com/random/300x300/?tshirt" },
-  { id: 2, name: "Điện thoại iPhone 15", price: 24990000, image: "https://cdn2.cellphones.com.vn/x/media/catalog/product/i/p/iphone-15-pro-max_2__4_1.jpg?_gl=1*17esq6x*_gcl_au*MTIyNzIyMjQ3LjE3Njc2NzkxNTU.*_ga*MTU5OTQ5NDg2My4xNzM4NjkzMjk0*_ga_QLK8WFHNK9*czE3Njc2NzkxNTUkbzE0JGcxJHQxNzY3Njc5MTY2JGo0OSRsMCRoMTIzMzY0NzYyNA.." },
-  { id: 3, name: "Sách Lập trình JavaScript", price: 159000, image: "https://source.unsplash.com/random/300x300/?book" },
-  { id: 4, name: "Tai nghe Bluetooth", price: 1290000, image: "https://source.unsplash.com/random/300x300/?headphones" },
-  { id: 5, name: "Giày thể thao nam", price: 899000, image: "https://source.unsplash.com/random/300x300/?shoes" },
-  { id: 6, name: "Laptop Gaming RTX", price: 34990000, image: "https://source.unsplash.com/random/300x300/?laptop" },
+  { id: 1, name: "Robot hút bụi lau nhà Roborock Q Revo 5AE", price: 11990000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/r/o/roborock-q-revo-5ae-1.jpg" },
+  { id: 2, name: "Điện thoại iPhone 15", price: 24990000, image: "https://cdn2.cellphones.com.vn/x/media/catalog/product/i/p/iphone-15-pro-max_2__4_1.jpg" },
+  { id: 3, name: "Máy sấy tóc Ion tốc độ cao Laifen SE", price: 2190000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/may-say-toc-ion-toc-do-cao-laifen-se-1.jpg" },
+  { id: 4, name: "Máy tạo kiểu tóc đa năng Dyson Airwrap Complete Long HS05 Limited Edition", price: 10990000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/may-tao-kieu-toc-dyson-airwrap-complete-long-hs05-limited-edition-1.png" },
+  { id: 5, name: "Máy in Laser Brother HL-L2321D", price: 3190000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/_/0/_0002_26903_chinh_dien_brother_hl_2321.jpg" },
+  { id: 6, name: "Máy giặt sấy Xiaomi Mijia giặt 10.5 - Sấy 7.5kg 2025", price: 11490000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/may-giat-say-xiaomi-mijia-giat-10-5-kg-say-7-kg-2025-1.png" },
   { id: 7, name: "iPhone 17 Pro 256GB | Chính hãng", price: 34390000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-17-pro-256-gb.png" },
   { id: 8, name: "Samsung Galaxy Z Fold7 12GB 256GB", price: 40590000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-z-fold-7-xanh.jpg" },
   { id: 9, name: "Laptop Dell Inspiron 14 5440 D0F3W - Chính hãng", price: 15990000, image: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/l/a/laptop_dell_inspiron_14_5440_d0f3w_-_2.png" },

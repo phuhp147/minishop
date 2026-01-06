@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi tiết sản phẩm - MiniShop</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header>
+  <div class="container header-container">
+    <h1 class="logo"><a href="index.html">MiniShop 🛒</a></h1>
+    
+    <nav class="main-nav">
+      <a href="index.html">Trang chủ</a>
+      <a href="products.html">Sản phẩm</a>
+      <a href="cart.html" class="cart-link">
+        Giỏ hàng (<span id="cart-count">0</span>)
+      </a>
+      
+      <!-- Phần đăng nhập / đăng xuất do JS tự động thêm -->
+      <div id="auth-section"></div>
+    </nav>
+  </div>
+</header>
+
+  <section class="product-detail">
+    <div class="container">
+      <div class="detail-grid" id="product-detail-content">
+        <!-- Nội dung chi tiết sẽ được JS điền khi click từ trang sản phẩm -->
+      </div>
+    </div>
+  </section>
+
+ 
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

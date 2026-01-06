@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giỏ hàng - MiniShop</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <!-- Header chung -->
+  <header>
+    <div class="container header-container">
+      <h1 class="logo"><a href="index.html">MiniShop 🛒</a></h1>
+      
+      <nav class="main-nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="products.html">Sản phẩm</a>
+        <a href="cart.html" class="cart-link">
+          Giỏ hàng (<span id="cart-count">0</span>)
+        </a>
+        <div id="auth-section"></div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Nội dung giỏ hàng -->
+   <section class="cart">
+    <div class="container">
+      <h2>Giỏ hàng của bạn</h2>
+      <div id="cart-items">
+        <p>Giỏ hàng trống. <a href="products.html">Mua sắm ngay!</a></p>
+      </div>
+      <div class="cart-total" id="cart-total" style="display:none;">
+        <h3>Tổng tiền: <span id="total-price">0đ</span></h3>
+        <a href="checkout.html" class="btn-primary">Thanh toán</a>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

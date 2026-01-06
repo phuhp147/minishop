@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - MiniShop</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+    th { background: #1a1a1a; color: white; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="text-align:center; color:#ff6b35;">Admin Dashboard</h1>
+    <button onclick="localStorage.removeItem('admin'); window.location.href='login.html'" class="btn-secondary">Đăng xuất</button>
+
+    <h2>Danh sách người dùng</h2>
+    <table id="user-table">
+      <thead><tr><th>ID</th><th>Tên</th><th>Email</th><th>Ngày đăng ký</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    if (!localStorage.getItem('admin')) window.location.href = 'login.html';
+
+    const API_URL = 'http://localhost:3000';
+    const token = localStorage.getItem('token'); // Dùng token user admin nếu muốn bảo mật hơn
+
+    fetch(`${API_URL}/admin/users`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(users => {
+      const tbody = document.querySelector('#user-table tbody');
+      users.forEach(u => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${u._id}</td><td>${u.name}</td><td>${u.email}</td><td>${new Date(u.createdAt || Date.now()).toLocaleDateString('vi-VN')}</td>`;
+        tbody.appendChild(tr);
+      });
+    });
+  </script>
+</body>
+</html>

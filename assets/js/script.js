@@ -1,4 +1,4 @@
-const API_URL = 'https://minishop-backend.onrender.com'; // Thay bằng URL khi deploy
+const API_URL = '${API_URL}minishop-backend.onrender.com'; // Thay bằng URL khi deploy
 
 // Dữ liệu sản phẩm mẫu
 const products = [

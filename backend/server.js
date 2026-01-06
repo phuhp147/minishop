@@ -24,15 +24,17 @@ const authMiddleware = async (req, res, next) => {
   const token = authHeader.split(' ')[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.id;  // Sửa: decoded.id thay vì [decoded.id]
+    req.userId = decoded.id;
     next();
   } catch (err) {
     return res.status(401).json({ error: 'Invalid or expired token' });
   }
 };
 
-// API: Đăng ký
-app.post('/register', async (req, res) => {
+// ================== API ==================
+
+// Đăng ký
+app.post('/api/register', async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Vui lòng điền đầy đủ thông tin!' });
@@ -53,8 +55,8 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// API: Đăng nhập
-app.post('/login', async (req, res) => {
+// Đăng nhập
+app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -70,19 +72,19 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// API: Lấy giỏ hàng
-app.get('/cart', authMiddleware, async (req, res) => {
+// Lấy giỏ hàng
+app.get('/api/cart', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.userId).select('cart');
-    res.json(user.cart || []);
+    res.json(user?.cart || []);
   } catch (err) {
     console.error('Lỗi lấy giỏ hàng:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// API: Thêm / cập nhật / xóa item trong giỏ (quantity âm = xóa)
-app.post('/cart/add', authMiddleware, async (req, res) => {
+// Thêm / cập nhật / xóa item trong giỏ
+app.post('/api/cart/add', authMiddleware, async (req, res) => {
   try {
     const { productId, quantity = 1 } = req.body;
     if (!productId) return res.status(400).json({ error: 'Thiếu productId' });
@@ -109,8 +111,8 @@ app.post('/cart/add', authMiddleware, async (req, res) => {
   }
 });
 
-// API: Xóa sạch giỏ hàng
-app.post('/cart/clear', authMiddleware, async (req, res) => {
+// Xóa sạch giỏ hàng
+app.post('/api/cart/clear', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
     user.cart = [];
@@ -122,8 +124,8 @@ app.post('/cart/clear', authMiddleware, async (req, res) => {
   }
 });
 
-// API: Quên mật khẩu
-app.post('/forgot-password', async (req, res) => {
+// Quên mật khẩu
+app.post('/api/forgot-password', async (req, res) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -131,11 +133,11 @@ app.post('/forgot-password', async (req, res) => {
 
     const token = crypto.randomBytes(20).toString('hex');
     user.resetPasswordToken = token;
-    user.resetPasswordExpires = Date.now() + 3600000; // 1 giờ
+    user.resetPasswordExpires = Date.now() + 3600000;
 
     await user.save();
 
-    const resetUrl = `https://mini-shop.netlify.app/reset-password.html?token=${token}`;
+    const resetUrl = `https://mini-shop1.netlify.app/reset-password.html?token=${token}`;
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -159,8 +161,8 @@ app.post('/forgot-password', async (req, res) => {
   }
 });
 
-// API: Reset mật khẩu
-app.post('/reset-password', async (req, res) => {
+// Reset mật khẩu
+app.post('/api/reset-password', async (req, res) => {
   const { token, password } = req.body;
   try {
     const user = await User.findOne({
@@ -182,8 +184,8 @@ app.post('/reset-password', async (req, res) => {
   }
 });
 
-// API Admin (tùy chọn)
-app.get('/admin/users', authMiddleware, async (req, res) => {
+// Admin
+app.get('/api/admin/users', authMiddleware, async (req, res) => {
   try {
     const admin = await User.findById(req.userId);
     if (!admin?.isAdmin) return res.status(403).json({ error: 'Không có quyền!' });
@@ -196,20 +198,19 @@ app.get('/admin/users', authMiddleware, async (req, res) => {
   }
 });
 
-// Serve static files (frontend) - ĐẶT SAU TẤT CẢ API
+// ================== FRONTEND ==================
 app.use(express.static(path.join(__dirname, '..')));
 
-// Catch-all cho SPA
-app.get('*', (req, res) => {
+// Catch-all cho SPA (loại trừ API)
+app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
-// Kết nối MongoDB
+// ================== DB & Server ==================
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// Khởi động server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
